@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para ti, Eimy ♥</title>
+
+  <!-- ═══════════════════════════════════════════════════════
+       GOOGLE FONTS — Playfair Display & Lora
+       ═══════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@500;700;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       RESET & VARIABLES GLOBALES
+       ═══════════════════════════════════════════════════════ */
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    :root {
+      --gold-rose: #b76e79;
+      --gold-rose-light: #e8b4b8;
+      --gold-dark: #8c5059;
+      --neon-pink: #ff6b9d;
+      --neon-purple: #c471f5;
+      --neon-blue: #48c6ef;
+      --bg-dark: #06060f;
+      --white: #f5f0eb;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Lora', serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+      background: var(--bg-dark);
+      font-family: var(--font-body);
+      color: var(--white);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FASE 0 — PANTALLA DE BIENVENIDA / PRÓLOGO
+       ═══════════════════════════════════════════════════════ */
+    #intro-screen {
+      position: fixed; inset: 0; z-index: 150;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: radial-gradient(ellipse at center, #140d24 0%, #080612 60%, #030308 100%);
+      padding: 24px;
+      text-align: center;
+      transition: opacity 1.8s ease-in-out, filter 1.8s ease-in-out;
+      box-sizing: border-box;
+      cursor: default;
+    }
+    #intro-screen.fade-out {
+      opacity: 0; filter: blur(25px); pointer-events: none;
+    }
+
+    .intro-card {
+      max-width: 680px;
+      width: 100%;
+      padding: clamp(26px, 5.5vw, 48px);
+      border-radius: 24px;
+      background: rgba(18, 12, 32, 0.65);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(232, 180, 184, 0.28);
+      box-shadow:
+        0 0 45px rgba(183, 110, 121, 0.2),
+        0 20px 70px rgba(0, 0, 0, 0.8);
+      display: flex; flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .intro-sparkle-top {
+      font-size: 2rem;
+      color: var(--neon-pink);
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 14px rgba(255, 107, 157, 0.7));
+      animation: heartPulse 2.2s ease-in-out infinite;
+    }
+
+    #typewriter-text {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.9vw, 1.45rem);
+      line-height: 1.8;
+      color: var(--gold-rose-light);
+      min-height: 75px;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    #typewriter-signature {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-style: normal;
+      font-size: clamp(1.2rem, 3.4vw, 1.75rem);
+      color: #fff;
+      text-shadow: 0 0 22px rgba(255, 107, 157, 0.55), 0 0 45px rgba(183, 110, 121, 0.35);
+      margin-top: 18px;
+      letter-spacing: 0.04em;
+      min-height: 40px;
+      text-align: center;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2.5px;
+      height: 1.15em;
+      background: var(--neon-pink);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 0.8s infinite;
+      box-shadow: 0 0 8px var(--neon-pink);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0; }
+    }
+
+    #intro-btn {
+      margin-top: 32px;
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--gold-rose), var(--neon-pink));
+      border: none;
+      padding: 1.05em 2.8em;
+      border-radius: 50px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: opacity 0.8s ease, transform 0.8s ease, box-shadow 0.4s ease;
+      box-shadow: 0 6px 30px rgba(183, 110, 121, 0.45);
+    }
+    #intro-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #intro-btn:hover {
+      box-shadow: 0 8px 45px rgba(255, 107, 157, 0.65);
+      transform: scale(1.05);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FASE 1 — PANTALLA DE INICIO
+       ═══════════════════════════════════════════════════════ */
+    #start-screen {
+      position: fixed; inset: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 2s ease-in-out, filter 2s ease-in-out;
+    }
+    #start-screen.fade-out {
+      opacity: 0; filter: blur(20px); pointer-events: none;
+    }
+    #start-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; z-index: -1;
+    }
+
+    /* ---------- Botón START ---------- */
+    #start-btn {
+      position: relative; z-index: 10;
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      font-weight: 700;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: transparent;
+      border: 2px solid var(--gold-rose-light);
+      padding: 1.1em 3.2em;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.5s ease;
+      animation: btnPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes btnPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(183,110,121,0.3), 0 0 60px rgba(183,110,121,0.1); }
+      50%      { box-shadow: 0 0 30px rgba(183,110,121,0.6), 0 0 80px rgba(183,110,121,0.25); }
+    }
+    #start-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--gold-rose), var(--neon-pink));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s ease; z-index: -1;
+    }
+    #start-btn:hover::before { transform: scaleX(1); }
+    #start-btn:hover { border-color: var(--neon-pink); color: #fff; }
+
+    /* ═══════════════════════════════════════════════════════
+       FASE 2 — CIELO ESTRELLADO
+       ═══════════════════════════════════════════════════════ */
+    #starfield {
+      position: fixed; inset: 0; z-index: 1;
+      background: radial-gradient(ellipse at 50% 0%, #1a1040 0%, #0d0d25 40%, #06060f 100%);
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 2s ease-in-out, filter 1.5s ease;
+    }
+    #starfield.visible { opacity: 1; }
+    #starfield.dim { filter: brightness(0.3); }
+    #starfield.hide { opacity: 0; pointer-events: none; }
+
+    .stars-layer {
+      position: absolute; inset: 0; border-radius: 50%;
+      animation: twinkle linear infinite alternate;
+    }
+    .stars-sm { width: 1px; height: 1px; animation-duration: 3s; }
+    .stars-md { width: 2px; height: 2px; animation-duration: 4.5s; animation-delay: 0.7s; }
+    .stars-lg { width: 3px; height: 3px; animation-duration: 5.5s; animation-delay: 1.2s; }
+
+    @keyframes twinkle {
+      0%   { opacity: 0.3; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    /* Estrellas fugaces */
+    .shooting-star {
+      position: absolute;
+      width: 120px; height: 2px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9), transparent);
+      border-radius: 2px; opacity: 0;
+      animation: shoot linear infinite;
+      filter: drop-shadow(0 0 4px rgba(200,180,255,0.8));
+    }
+    .shooting-star:nth-child(1) { top: 12%; left: 15%; animation-duration: 3.5s; animation-delay: 1s; }
+    .shooting-star:nth-child(2) { top: 25%; left: 60%; animation-duration: 4s; animation-delay: 5s; width: 90px; }
+    .shooting-star:nth-child(3) { top: 40%; left: 35%; animation-duration: 3s; animation-delay: 9s; width: 150px; }
+    .shooting-star:nth-child(4) { top: 8%; left: 80%; animation-duration: 3.8s; animation-delay: 14s; width: 100px; }
+
+    @keyframes shoot {
+      0%   { transform: translateX(0) translateY(0) rotate(-35deg); opacity: 0; }
+      5%   { opacity: 1; }
+      15%  { opacity: 1; }
+      30%  { transform: translateX(600px) translateY(300px) rotate(-35deg); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* Nebulosas */
+    .nebula {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.12;
+      animation: nebulaPulse 8s ease-in-out infinite alternate;
+    }
+    .nebula-1 { width: 500px; height: 500px; top: 10%; left: -10%; background: radial-gradient(circle, var(--neon-purple), transparent); }
+    .nebula-2 { width: 400px; height: 400px; bottom: 5%; right: -5%; background: radial-gradient(circle, var(--neon-pink), transparent); animation-delay: 3s; }
+    .nebula-3 { width: 350px; height: 350px; top: 50%; left: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle, var(--neon-blue), transparent); animation-delay: 5s; }
+    @keyframes nebulaPulse {
+      0%   { opacity: 0.08; transform: scale(1); }
+      100% { opacity: 0.18; transform: scale(1.15); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CARRUSEL 3D
+       ═══════════════════════════════════════════════════════ */
+    #carousel-wrapper {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      perspective: 1100px;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+      pointer-events: none;
+    }
+    #carousel-wrapper.visible { opacity: 1; pointer-events: auto; }
+    #carousel-wrapper.fade-out { opacity: 0; pointer-events: none; transition: opacity 2s ease; }
+
+    /* Título flotante */
+    #carousel-title {
+      position: fixed; top: 6%; left: 50%;
+      transform: translateX(-50%);
+      z-index: 12;
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 3.5vw, 2rem);
+      font-weight: 700;
+      color: var(--gold-rose-light);
+      text-shadow: 0 0 20px rgba(183,110,121,0.5), 0 0 60px rgba(183,110,121,0.2);
+      letter-spacing: 0.15em;
+      opacity: 0;
+      animation: titleFloat 3s ease-in-out infinite alternate;
+      transition: opacity 1.5s ease;
+      text-align: center; white-space: nowrap;
+    }
+    #carousel-title.visible { opacity: 1; }
+    @keyframes titleFloat {
+      0%   { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-50%) translateY(-8px); }
+    }
+
+    /* Escena 3D */
+    #carousel-scene {
+      position: relative;
+      transform-style: preserve-3d;
+      animation: breathe 6s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-12px); }
+    }
+
+    #carousel {
+      position: relative;
+      width: 240px; height: 340px;
+      transform-style: preserve-3d;
+    }
+
+    /* Resplandor del piso */
+    #floor-glow {
+      position: absolute;
+      bottom: -90px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 60px;
+      background: radial-gradient(ellipse, rgba(183,110,121,0.35) 0%, transparent 70%);
+      border-radius: 50%; filter: blur(10px);
+      animation: floorPulse 3s ease-in-out infinite alternate;
+      z-index: 11; pointer-events: none;
+    }
+    @keyframes floorPulse {
+      0%   { opacity: 0.5; transform: translateX(-50%) scaleX(0.9); }
+      100% { opacity: 1;   transform: translateX(-50%) scaleX(1.1); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       TARJETAS — AHORA CON DORSO (imagen oculta)
+       ═══════════════════════════════════════════════════════ */
+    .card {
+      position: absolute;
+      width: 240px; height: 340px;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      backface-visibility: hidden;
+      transition: transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.8s ease, box-shadow 0.4s ease, filter 0.6s ease;
+      /* SIN imagen visible — el dorso la cubre totalmente */
+      background: var(--bg-dark);
+    }
+
+    /* Borde neón giratorio */
+    .card::before {
+      content: '';
+      position: absolute; inset: -3px;
+      border-radius: 20px;
+      background: conic-gradient(
+        from var(--card-angle, 0deg),
+        var(--neon-pink), var(--neon-purple), var(--neon-blue),
+        var(--gold-rose-light), var(--neon-pink)
+      );
+      z-index: -1;
+      animation: borderSpin 4s linear infinite;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    @keyframes borderSpin { to { --card-angle: 360deg; } }
+
+    .card::after {
+      content: '';
+      position: absolute; inset: 2px;
+      border-radius: 16px;
+      background: var(--bg-dark);
+      z-index: -1;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 25px rgba(255,107,157,0.4), 0 0 50px rgba(196,113,245,0.2), 0 20px 60px rgba(0,0,0,0.5);
+      filter: brightness(1.15);
+    }
+    .card:hover::before { opacity: 1; }
+
+    /* La imagen REAL está oculta — no se ve en el carrusel */
+    .card img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      position: relative; z-index: 0;
+      border-radius: 16px;
+      /* OCULTA: la tapa la cubre */
+      opacity: 0;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DORSO ELEGANTE DE LA CARTA (cubre la imagen)
+       ═══════════════════════════════════════════════════════ */
+    .card-back {
+      position: absolute; inset: 0;
+      z-index: 3;
+      border-radius: 16px;
+      /* Fondo oscuro elegante */
+      background: linear-gradient(145deg, #111122, #0a0a18 40%, #15102a 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    /* Marco decorativo interior */
+    .card-back::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1.5px solid rgba(183,110,121,0.3);
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
+    /* Patrón diamante sutil en el fondo */
+    .card-back::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(183,110,121,0.04) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(183,110,121,0.04) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(183,110,121,0.04) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(183,110,121,0.04) 75%);
+      background-size: 30px 30px;
+      background-position: 0 0, 0 15px, 15px -15px, -15px 0;
+      pointer-events: none;
+    }
+
+    /* Corazón decorativo */
+    .card-heart {
+      font-size: 2.2rem;
+      color: var(--gold-rose);
+      filter: drop-shadow(0 0 12px rgba(183,110,121,0.5));
+      z-index: 1;
+      animation: heartPulse 2s ease-in-out infinite;
+    }
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.12); }
+    }
+
+    /* Número de la carta en el dorso */
+    .card-back-number {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gold-rose-light);
+      letter-spacing: 0.15em;
+      z-index: 1;
+      text-shadow: 0 0 15px rgba(183,110,121,0.4);
+    }
+
+    /* Texto "tócame" sutil */
+    .card-back-hint {
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-style: italic;
+      color: rgba(232,180,184,0.4);
+      letter-spacing: 0.2em;
+      z-index: 1;
+      margin-top: 4px;
+    }
+
+    /* Brillito que cruza la carta */
+    .card-shine {
+      position: absolute;
+      top: -100%; left: -50%;
+      width: 60%; height: 300%;
+      background: linear-gradient(
+        100deg,
+        transparent 30%,
+        rgba(255,255,255,0.05) 45%,
+        rgba(255,255,255,0.12) 50%,
+        rgba(255,255,255,0.05) 55%,
+        transparent 70%
+      );
+      transform: rotate(25deg);
+      z-index: 2;
+      animation: cardShine 5s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes cardShine {
+      0%, 75%  { left: -50%; opacity: 0; }
+      80%      { opacity: 1; }
+      100%     { left: 150%; opacity: 0; }
+    }
+
+    /* Animación de eliminación */
+    .card.removing {
+      animation: cardDisintegrate 1.2s ease-in forwards;
+    }
+    @keyframes cardDisintegrate {
+      0%   { opacity: 1; transform: var(--card-transform) scale(1); filter: blur(0) brightness(1); }
+      30%  { opacity: 1; filter: blur(0) brightness(2); }
+      60%  { opacity: 0.5; transform: var(--card-transform) scale(1.1) translateY(-40px); filter: blur(3px) brightness(2.5); }
+      100% { opacity: 0; transform: var(--card-transform) scale(0.2) translateY(-120px); filter: blur(12px) brightness(3); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PARTÍCULAS / SPARKLES
+       ═══════════════════════════════════════════════════════ */
+    #sparkles-container {
+      position: fixed; inset: 0;
+      z-index: 9; pointer-events: none;
+      overflow: hidden;
+      transition: opacity 1s ease;
+    }
+    .sparkle {
+      position: absolute;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--gold-rose-light);
+      opacity: 0;
+      animation: sparkleFloat linear infinite;
+      filter: blur(0.5px);
+    }
+    @keyframes sparkleFloat {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      15%  { opacity: 1; transform: translateY(-30px) scale(1); }
+      85%  { opacity: 0.6; }
+      100% { opacity: 0; transform: translateY(-200px) scale(0.3); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       CONTADOR DE CARTAS
+       ═══════════════════════════════════════════════════════ */
+    #live-counter {
+      position: fixed; bottom: 5%; left: 50%;
+      transform: translateX(-50%);
+      z-index: 12;
+      font-family: var(--font-body);
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: var(--gold-rose-light);
+      letter-spacing: 0.12em;
+      opacity: 0; transition: opacity 1s ease;
+      text-shadow: 0 0 15px rgba(183,110,121,0.4);
+      text-align: center;
+    }
+    #live-counter.visible { opacity: 1; }
+
+    .dot-track {
+      display: flex; gap: 10px;
+      justify-content: center; margin-top: 8px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      border: 2px solid var(--gold-rose-light);
+      background: transparent;
+      transition: background 0.5s ease, box-shadow 0.5s ease;
+    }
+    .dot.filled {
+      background: var(--gold-rose-light);
+      box-shadow: 0 0 10px var(--gold-rose-light);
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FASE 3 — TARJETA AMPLIADA + SCRATCH
+       ═══════════════════════════════════════════════════════ */
+    #overlay {
+      position: fixed; inset: 0; z-index: 50;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.6s ease, background 0.6s ease;
+      padding: 14px;
+      box-sizing: border-box;
+    }
+    #overlay.visible {
+      opacity: 1; pointer-events: auto;
+      background: rgba(0,0,0,0.85);
+    }
+
+    #scratch-container {
+      position: relative;
+      /* Dimensiones adaptadas dinámicamente al tamaño y proporción de cada carta */
+      max-width: 92vw;
+      max-height: 74vh;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow:
+        0 0 35px rgba(255,107,157,0.35),
+        0 0 70px rgba(196,113,245,0.18),
+        0 20px 80px rgba(0,0,0,0.85);
+      border: 2.5px solid var(--gold-rose-light);
+      animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d0d12;
+      transition: opacity 0.25s ease;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.6) rotateY(35deg); opacity: 0; }
+      to   { transform: scale(1) rotateY(0deg);   opacity: 1; }
+    }
+    #scratch-container img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      /* NUNCA RECORTAR: la imagen y carta se muestra 100% íntegra y legible */
+      object-fit: contain;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    #scratch-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PARTÍCULAS DE POLVO DEL SCRATCH (canvas de partículas)
+       ═══════════════════════════════════════════════════════ */
+    #dust-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Botón cerrar */
+    #close-btn {
+      margin-top: 1.8rem;
+      font-family: var(--font-display);
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      color: var(--white);
+      background: linear-gradient(135deg, var(--gold-rose), var(--gold-dark));
+      border: none;
+      padding: 0.9em 2.8em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(183,110,121,0.4);
+    }
+    #close-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 8px 35px rgba(183,110,121,0.6);
+    }
+
+    #card-counter-overlay {
+      margin-top: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--gold-rose-light);
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       FASE 4 — VIDEO FINAL
+       ═══════════════════════════════════════════════════════ */
+    #video-finale {
+      position: fixed; inset: 0; z-index: 60;
+      opacity: 0; pointer-events: none;
+      transition: opacity 4s ease-in-out;
+      background: #000;
+    }
+    #video-finale.visible { opacity: 1; pointer-events: auto; }
+    #video-finale video {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    #finale-text {
+      position: absolute;
+      bottom: 12%; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      text-shadow: 0 4px 24px rgba(0,0,0,0.7), 0 0 40px rgba(183,110,121,0.4);
+      text-align: center;
+      opacity: 0;
+      animation: fadeUp 3s ease 3s forwards;
+      white-space: nowrap;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(30px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       RESPONSIVE
+       ═══════════════════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      #carousel { width: 150px; height: 215px; }
+      .card { width: 150px; height: 215px; border-radius: 14px; }
+      .card img { border-radius: 12px; }
+      .card-back { border-radius: 12px; }
+      .card-back::before { inset: 8px; border-radius: 8px; }
+      .card-heart { font-size: 1.6rem; }
+      .card-back-number { font-size: 1.1rem; }
+      .card-back-hint { font-size: 0.6rem; }
+      #scratch-container { max-width: 92vw; max-height: 70vh; }
+      #floor-glow { width: 280px; bottom: -60px; }
+      #carousel-title { font-size: clamp(0.9rem, 4vw, 1.3rem); }
+      .nebula-1 { width: 250px; height: 250px; }
+      .nebula-2 { width: 200px; height: 200px; }
+      .nebula-3 { width: 180px; height: 180px; }
+      #finale-text { white-space: normal; width: 85%; }
+    }
+
+    /* @property para animar conic-gradient */
+    @property --card-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════
+       AUDIO DE FONDO (loop)
+       📌 PLACEHOLDER: Reemplaza "nuestra-cancion.mp3"
+       ═══════════════════════════════════════════════════════ -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="nuestra-cancion.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FASE 0 — PANTALLA DE BIENVENIDA (Prólogo con máquina de escribir)
+       ═══════════════════════════════════════════════════════ -->
+  <div id="intro-screen">
+    <div class="intro-card">
+      <div class="intro-sparkle-top">♥</div>
+      <p id="typewriter-text"></p>
+      <p id="typewriter-signature"></p>
+      <button id="intro-btn">Gooouuuu</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FASE 1 — PANTALLA DE INICIO (Video Nosotros con música)
+       📌 PLACEHOLDER: Reemplaza "video-nosotros.mp4" con tu archivo de video.
+       (Se reproduce en bucle, silenciado, a máxima calidad y pantalla completa)
+       ═══════════════════════════════════════════════════════ -->
+  <div id="start-screen">
+    <video id="start-bg" autoplay muted loop playsinline preload="auto">
+      <source src="video-nosotros.mp4" type="video/mp4" />
+    </video>
+    <button id="start-btn">Start</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FASE 2 — CIELO ESTRELLADO + CARRUSEL 3D
+       ═══════════════════════════════════════════════════════ -->
+  <div id="starfield">
+    <div class="stars-layer stars-sm" id="layer-sm"></div>
+    <div class="stars-layer stars-md" id="layer-md"></div>
+    <div class="stars-layer stars-lg" id="layer-lg"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="shooting-star"></div>
+    <div class="nebula nebula-1"></div>
+    <div class="nebula nebula-2"></div>
+    <div class="nebula nebula-3"></div>
+  </div>
+
+  <div id="sparkles-container"></div>
+
+  <div id="carousel-title">Descubre cada carta, mi amor ♥</div>
+
+  <div id="carousel-wrapper">
+    <div id="carousel-scene">
+      <div id="carousel">
+        <!--
+          📌 PLACEHOLDER: Reemplaza "carta-1.jpg" … "carta-5.jpg"
+             Las imágenes están OCULTAS en el carrusel — solo se ven al rascar.
+        -->
+        <div class="card" data-index="0">
+          <img src="carta-1.jpg" alt="Carta 1" />
+          <div class="card-back">
+            <span class="card-heart">♥</span>
+            <span class="card-back-number">Carta I</span>
+            <span class="card-back-hint">tócame</span>
+            <div class="card-shine"></div>
+          </div>
+        </div>
+        <div class="card" data-index="1">
+          <img src="carta-2.jpg" alt="Carta 2" />
+          <div class="card-back">
+            <span class="card-heart">♥</span>
+            <span class="card-back-number">Carta II</span>
+            <span class="card-back-hint">tócame</span>
+            <div class="card-shine"></div>
+          </div>
+        </div>
+        <div class="card" data-index="2">
+          <img src="carta-3.jpg" alt="Carta 3" />
+          <div class="card-back">
+            <span class="card-heart">♥</span>
+            <span class="card-back-number">Carta III</span>
+            <span class="card-back-hint">tócame</span>
+            <div class="card-shine"></div>
+          </div>
+        </div>
+        <div class="card" data-index="3">
+          <img src="carta-4.jpg" alt="Carta 4" />
+          <div class="card-back">
+            <span class="card-heart">♥</span>
+            <span class="card-back-number">Carta IV</span>
+            <span class="card-back-hint">tócame</span>
+            <div class="card-shine"></div>
+          </div>
+        </div>
+        <div class="card" data-index="4">
+          <img src="carta-5.jpg" alt="Carta 5" />
+          <div class="card-back">
+            <span class="card-heart">♥</span>
+            <span class="card-back-number">Carta V</span>
+            <span class="card-back-hint">tócame</span>
+            <div class="card-shine"></div>
+          </div>
+        </div>
+      </div>
+      <div id="floor-glow"></div>
+    </div>
+  </div>
+
+  <div id="live-counter">
+    <span id="counter-text">0 de 5 cartas descubiertas</span>
+    <div class="dot-track" id="dot-track">
+      <div class="dot" data-dot="0"></div>
+      <div class="dot" data-dot="1"></div>
+      <div class="dot" data-dot="2"></div>
+      <div class="dot" data-dot="3"></div>
+      <div class="dot" data-dot="4"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FASE 3 — OVERLAY: SCRATCH CARD
+       ═══════════════════════════════════════════════════════ -->
+  <div id="overlay">
+    <div id="scratch-container">
+      <img id="scratch-reveal" src="" alt="Carta" />
+      <canvas id="scratch-canvas"></canvas>
+      <canvas id="dust-canvas"></canvas>
+    </div>
+    <button id="close-btn">Cerrar</button>
+    <div id="card-counter-overlay"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       FASE 4 — VIDEO FINAL
+       📌 PLACEHOLDER: Reemplaza "104680.mp4"
+       preload="auto" fuerza carga completa para máxima calidad
+       ═══════════════════════════════════════════════════════ -->
+  <div id="video-finale">
+    <video id="finale-video" autoplay muted loop playsinline preload="auto">
+      <source src="104680.mp4" type="video/mp4" />
+    </video>
+    <div id="finale-text">Te amo, Eimy ♥</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       JAVASCRIPT
+       ═══════════════════════════════════════════════════════ -->
+  <script>
+    /* =======================================================
+       UTILIDADES
+       ======================================================= */
+
+    function generateStars(count, maxW, maxH) {
+      const shadows = [];
+      for (let i = 0; i < count; i++) {
+        const x = Math.floor(Math.random() * maxW);
+        const y = Math.floor(Math.random() * maxH);
+        const alpha = (0.5 + Math.random() * 0.5).toFixed(2);
+        shadows.push(`${x}px ${y}px 0 rgba(255,255,255,${alpha})`);
+      }
+      return shadows.join(',');
+    }
+
+    function createSparkles() {
+      const container = document.getElementById('sparkles-container');
+      for (let i = 0; i < 30; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = 40 + Math.random() * 40 + '%';
+        s.style.animationDuration = (2 + Math.random() * 4) + 's';
+        s.style.animationDelay = Math.random() * 8 + 's';
+        s.style.width = s.style.height = (2 + Math.random() * 4) + 'px';
+        const colors = ['#e8b4b8', '#ff6b9d', '#c471f5', '#48c6ef', '#fff'];
+        s.style.background = colors[Math.floor(Math.random() * colors.length)];
+        container.appendChild(s);
+      }
+    }
+
+    /* =======================================================
+       REFERENCIAS AL DOM
+       ======================================================= */
+    const introScreen      = document.getElementById('intro-screen');
+    const typewriterText   = document.getElementById('typewriter-text');
+    const typewriterSig    = document.getElementById('typewriter-signature');
+    const introBtn         = document.getElementById('intro-btn');
+    const startScreen      = document.getElementById('start-screen');
+    const startBgVideo     = document.getElementById('start-bg');
+    const startBtn         = document.getElementById('start-btn');
+    const bgMusic          = document.getElementById('bg-music');
+    const starfield        = document.getElementById('starfield');
+    const layerSm          = document.getElementById('layer-sm');
+    const layerMd          = document.getElementById('layer-md');
+    const layerLg          = document.getElementById('layer-lg');
+    const carouselWrap     = document.getElementById('carousel-wrapper');
+    const carousel         = document.getElementById('carousel');
+    const carouselTitle    = document.getElementById('carousel-title');
+    const liveCounter      = document.getElementById('live-counter');
+    const counterText      = document.getElementById('counter-text');
+    const dotTrack         = document.getElementById('dot-track');
+    const overlay          = document.getElementById('overlay');
+    const scratchContainer = document.getElementById('scratch-container');
+    const scratchReveal    = document.getElementById('scratch-reveal');
+    const scratchCanvas    = document.getElementById('scratch-canvas');
+    const dustCanvas       = document.getElementById('dust-canvas');
+    const closeBtn         = document.getElementById('close-btn');
+    const counterOverlay   = document.getElementById('card-counter-overlay');
+    const videoFinale      = document.getElementById('video-finale');
+    const finaleVideo      = document.getElementById('finale-video');
+
+    /* =======================================================
+       ESTADO
+       ======================================================= */
+    const TOTAL_CARDS    = 5;
+    const revealedSet    = new Set();
+    let   currentCardIdx = null;
+    let   scratchCtx     = null;
+    let   dustCtx        = null;
+    let   isScratching   = false;
+    let   carouselAngle  = 0;
+    let   carouselSpeed  = 0.3;
+    let   carouselPaused = false;
+    let   carouselRAF    = null;
+    let   activeCards    = [];
+    let   dustParticles  = [];
+    let   dustRAF        = null;
+
+    function getRadius() {
+      return window.innerWidth <= 600 ? 200 : 350;
+    }
+
+    /*
+      📌 PLACEHOLDER: Rutas de las imágenes que se revelan al rascar.
+    */
+    const cardImages = [
+      'carta-1.jpg',
+      'carta-2.jpg',
+      'carta-3.jpg',
+      'carta-4.jpg',
+      'carta-5.jpg'
+    ];
+
+    /* =======================================================
+       INIT ESTRELLAS
+       ======================================================= */
+    function initStars() {
+      const w = window.innerWidth, h = window.innerHeight;
+      layerSm.style.boxShadow = generateStars(500, w, h);
+      layerMd.style.boxShadow = generateStars(180, w, h);
+      layerLg.style.boxShadow = generateStars(70, w, h);
+    }
+    initStars();
+    window.addEventListener('resize', initStars);
+    createSparkles();
+
+    /* =======================================================
+       CARRUSEL 3D — Motor JS
+       ======================================================= */
+
+    function initCarousel() {
+      activeCards = Array.from(document.querySelectorAll('.card:not(.removing):not(.removed)'));
+      repositionCards();
+      animateCarousel();
+    }
+
+    function repositionCards() {
+      const n = activeCards.length;
+      if (n === 0) return;
+      const step = 360 / n;
+      activeCards.forEach((card, i) => {
+        card._baseAngle = step * i;
+        card.style.transition = 'transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      });
+      updateCardTransforms();
+    }
+
+    function updateCardTransforms() {
+      const radius = getRadius();
+      activeCards.forEach(card => {
+        const finalAngle = card._baseAngle + carouselAngle;
+        const t = `rotateY(${finalAngle}deg) translateZ(${radius}px)`;
+        card.style.transform = t;
+        card.style.setProperty('--card-transform', t);
+      });
+    }
+
+    function animateCarousel() {
+      if (!carouselPaused) {
+        carouselAngle += carouselSpeed;
+        if (carouselAngle >= 360) carouselAngle -= 360;
+        updateCardTransforms();
+      }
+      carouselRAF = requestAnimationFrame(animateCarousel);
+    }
+
+    /* =======================================================
+       FASE 0 — EFECTO MÁQUINA DE ESCRIBIR & ENTRADA
+       ======================================================= */
+    const messagePart1 = "le puseee el alma a este miniproyecto  amor espero que te guste es para ti ,";
+    const messagePart2 = "for you, for Eimy, my love, forever and ever.";
+
+    let charIdx1 = 0;
+    let charIdx2 = 0;
+
+    // Elemento cursor parpadeante
+    const cursor = document.createElement('span');
+    cursor.className = 'typewriter-cursor';
+
+    function typePart1() {
+      if (charIdx1 < messagePart1.length) {
+        const nextChar = messagePart1[charIdx1];
+        typewriterText.textContent = messagePart1.substring(0, charIdx1 + 1);
+        typewriterText.appendChild(cursor);
+        charIdx1++;
+        // Cadencia más pausada, emotiva y lenta
+        let speed = 85 + Math.random() * 35;
+        if (nextChar === ',' || nextChar === '.') speed += 250;
+        setTimeout(typePart1, speed);
+      } else {
+        // Pausa antes de la segunda línea
+        setTimeout(typePart2, 700);
+      }
+    }
+
+    function typePart2() {
+      if (charIdx2 < messagePart2.length) {
+        const nextChar = messagePart2[charIdx2];
+        typewriterSig.textContent = messagePart2.substring(0, charIdx2 + 1);
+        typewriterSig.appendChild(cursor);
+        charIdx2++;
+        let speed = 90 + Math.random() * 40;
+        if (nextChar === ',' || nextChar === '.') speed += 250;
+        setTimeout(typePart2, speed);
+      } else {
+        // Al terminar, revelar botón Gooouuuu suavemente
+        setTimeout(() => {
+          introBtn.classList.add('visible');
+        }, 500);
+      }
+    }
+
+    // Iniciar escritura poco después de cargar
+    setTimeout(typePart1, 600);
+
+    // Si hace clic en la pantalla antes de terminar, completa el texto de inmediato
+    introScreen.addEventListener('click', (e) => {
+      if (e.target === introBtn) return;
+      if (charIdx1 < messagePart1.length || charIdx2 < messagePart2.length) {
+        charIdx1 = messagePart1.length;
+        charIdx2 = messagePart2.length;
+        typewriterText.textContent = messagePart1;
+        typewriterSig.textContent = messagePart2;
+        typewriterSig.appendChild(cursor);
+        introBtn.classList.add('visible');
+      }
+    });
+
+    // Al pulsar el botón de bienvenida:
+    introBtn.addEventListener('click', () => {
+      // 1. Iniciar la música de fondo (autorizado por el gesto de clic)
+      bgMusic.play().catch(() => {});
+
+      // 2. Asegurar que video-nosotros esté reproduciéndose en bucle
+      if (startBgVideo && startBgVideo.play) {
+        startBgVideo.play().catch(() => {});
+      }
+
+      // 3. Desvanecer la pantalla de bienvenida con blur
+      introScreen.classList.add('fade-out');
+
+      setTimeout(() => {
+        introScreen.style.display = 'none';
+      }, 1900);
+    });
+
+    /* =======================================================
+       FASE 1 — START
+       ======================================================= */
+    startBtn.addEventListener('click', () => {
+      bgMusic.play().catch(() => {});
+      startScreen.classList.add('fade-out');
+      setTimeout(() => {
+        startScreen.style.display = 'none';
+        if (startBgVideo && startBgVideo.pause) startBgVideo.pause();
+        starfield.classList.add('visible');
+        setTimeout(() => {
+          carouselWrap.classList.add('visible');
+          carouselTitle.classList.add('visible');
+          liveCounter.classList.add('visible');
+          initCarousel();
+        }, 900);
+      }, 2200);
+    });
+
+    /* =======================================================
+       FASE 2 — CLICK EN TARJETA
+       ======================================================= */
+    carousel.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (!card || card.classList.contains('removing') || card.classList.contains('removed')) return;
+      const idx = parseInt(card.dataset.index, 10);
+      if (revealedSet.has(idx)) return;
+      openCard(idx);
+    });
+
+    function fitContainerToImage(naturalW, naturalH) {
+      if (!naturalW || !naturalH) {
+        naturalW = 400;
+        naturalH = 560;
+      }
+
+      // Dejamos margen para padding, botón "Cerrar" y contador inferior
+      const isMobile = window.innerWidth <= 600;
+      const maxW = window.innerWidth * (isMobile ? 0.92 : 0.82);
+      const maxH = window.innerHeight * (isMobile ? 0.68 : 0.74);
+      const ratio = naturalW / naturalH;
+
+      let targetW = maxW;
+      let targetH = targetW / ratio;
+
+      if (targetH > maxH) {
+        targetH = maxH;
+        targetW = targetH * ratio;
+      }
+
+      scratchContainer.style.width = Math.round(targetW) + 'px';
+      scratchContainer.style.height = Math.round(targetH) + 'px';
+    }
+
+    function openCard(idx) {
+      currentCardIdx = idx;
+      scratchMoveCounter = 0;
+      isCleaning = false;
+      carouselPaused = true;
+      starfield.classList.add('dim');
+
+      overlay.classList.add('visible');
+      updateCounterOverlay();
+
+      // Suave ocultamiento inicial mientras se calcula la proporción exacta
+      scratchContainer.style.opacity = '0';
+
+      const tempImg = new Image();
+      tempImg.src = cardImages[idx];
+
+      let isReady = false;
+      const onReady = () => {
+        if (isReady) return;
+        isReady = true;
+
+        scratchReveal.src = cardImages[idx];
+        fitContainerToImage(tempImg.naturalWidth, tempImg.naturalHeight);
+        scratchContainer.style.opacity = '1';
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            initScratchCanvas();
+            initDustCanvas();
+          });
+        });
+      };
+
+      if (tempImg.complete && tempImg.naturalWidth > 0) {
+        onReady();
+      } else {
+        tempImg.onload = onReady;
+        tempImg.onerror = () => {
+          fitContainerToImage(400, 560);
+          scratchReveal.src = cardImages[idx];
+          scratchContainer.style.opacity = '1';
+          initScratchCanvas();
+          initDustCanvas();
+        };
+      }
+    }
+
+    /* =======================================================
+       FASE 3 — SCRATCH NEGRO + PARTÍCULAS DE POLVO
+       ======================================================= */
+
+    let isCleaning = false;
+
+    function initScratchCanvas() {
+      isCleaning = false;
+      const dpr = window.devicePixelRatio || 1;
+      const w = scratchContainer.clientWidth || 300;
+      const h = scratchContainer.clientHeight || 450;
+
+      // Restaurar opacidad y filtros del canvas para cada carta
+      scratchCanvas.style.transition = 'none';
+      scratchCanvas.style.opacity = '1';
+      scratchCanvas.style.filter = 'none';
+
+      scratchCanvas.width  = Math.round(w * dpr);
+      scratchCanvas.height = Math.round(h * dpr);
+      scratchCanvas.style.width  = w + 'px';
+      scratchCanvas.style.height = h + 'px';
+
+      scratchCtx = scratchCanvas.getContext('2d');
+      scratchCtx.scale(dpr, dpr);
+
+      // ——— FONDO NEGRO ELEGANTE ———
+      const grad = scratchCtx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, '#1a1a1a');
+      grad.addColorStop(0.5, '#111111');
+      grad.addColorStop(1, '#0d0d0d');
+      scratchCtx.fillStyle = grad;
+      scratchCtx.fillRect(0, 0, w, h);
+
+      // Ruido/textura granulada sutil (simula material real de rasca)
+      scratchCtx.fillStyle = 'rgba(255,255,255,0.015)';
+      for (let px = 0; px < w; px += 4) {
+        for (let py = 0; py < h; py += 4) {
+          if (Math.random() > 0.5) {
+            scratchCtx.fillRect(px, py, 2, 2);
+          }
+        }
+      }
+
+      // Borde decorativo sutil
+      scratchCtx.strokeStyle = 'rgba(183,110,121,0.2)';
+      scratchCtx.lineWidth = 1;
+      const m = 16;
+      scratchCtx.strokeRect(m, m, w - m * 2, h - m * 2);
+
+      // Texto "Rasca aquí"
+      const fontSize = Math.max(16, Math.min(w * 0.075, 26));
+      scratchCtx.font = `italic ${fontSize}px 'Playfair Display', serif`;
+      scratchCtx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+      scratchCtx.textAlign = 'center';
+      scratchCtx.textBaseline = 'middle';
+      scratchCtx.fillText('Rasca aquí ♥', w / 2, h / 2 - 14);
+
+      // Hint
+      const smallFont = Math.max(10, Math.min(w * 0.035, 14));
+      scratchCtx.font = `${smallFont}px 'Lora', serif`;
+      scratchCtx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+      scratchCtx.fillText('☝ usa tu dedo o el mouse', w / 2, h / 2 + fontSize);
+
+      // Modo borrado
+      scratchCtx.globalCompositeOperation = 'destination-out';
+
+      scratchCanvas.addEventListener('mousedown',  onScratchStart);
+      scratchCanvas.addEventListener('mousemove',  onScratchMove);
+      scratchCanvas.addEventListener('mouseup',    onScratchEnd);
+      scratchCanvas.addEventListener('mouseleave', onScratchEnd);
+      scratchCanvas.addEventListener('touchstart', onScratchStart, { passive: false });
+      scratchCanvas.addEventListener('touchmove',  onScratchMove,  { passive: false });
+      scratchCanvas.addEventListener('touchend',   onScratchEnd);
+    }
+
+    /* ---------- CANVAS DE PARTÍCULAS DE POLVO ---------- */
+
+    function initDustCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = scratchContainer.clientWidth || 300;
+      const h = scratchContainer.clientHeight || 450;
+
+      dustCanvas.width  = Math.round(w * dpr);
+      dustCanvas.height = Math.round(h * dpr);
+      dustCanvas.style.width  = w + 'px';
+      dustCanvas.style.height = h + 'px';
+
+      dustCtx = dustCanvas.getContext('2d');
+      dustCtx.scale(dpr, dpr);
+
+      dustParticles = [];
+      animateDust();
+    }
+
+    /** Crea partículas de polvo negro en la posición del rascado. */
+    function spawnDust(x, y) {
+      const count = 6 + Math.floor(Math.random() * 8); // 6-13 partículas
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1 + Math.random() * 3.5;
+        const size  = 1.5 + Math.random() * 4;
+        dustParticles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5, // sesgo hacia arriba
+          size: size,
+          life: 1.0,        // 1.0 → 0.0
+          decay: 0.015 + Math.random() * 0.025,
+          // Tonos oscuros/gris para simular polvito negro
+          r: 30 + Math.floor(Math.random() * 50),
+          g: 30 + Math.floor(Math.random() * 40),
+          b: 30 + Math.floor(Math.random() * 40),
+          gravity: 0.04 + Math.random() * 0.06
+        });
+      }
+    }
+
+    /** Loop de animación de partículas de polvo. */
+    function animateDust() {
+      if (!dustCtx) return;
+      const w = scratchContainer.clientWidth || 300;
+      const h = scratchContainer.clientHeight || 450;
+      dustCtx.clearRect(0, 0, w, h);
+
+      for (let i = dustParticles.length - 1; i >= 0; i--) {
+        const p = dustParticles[i];
+        p.x    += p.vx;
+        p.y    += p.vy;
+        p.vy   += p.gravity;    // gravedad
+        p.vx   *= 0.98;         // fricción
+        p.life -= p.decay;
+
+        if (p.life <= 0) {
+          dustParticles.splice(i, 1);
+          continue;
+        }
+
+        dustCtx.globalAlpha = p.life * 0.8;
+        dustCtx.fillStyle = `rgb(${p.r},${p.g},${p.b})`;
+        dustCtx.beginPath();
+        dustCtx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+        dustCtx.fill();
+      }
+
+      dustCtx.globalAlpha = 1;
+      dustRAF = requestAnimationFrame(animateDust);
+    }
+
+    /* ---------- Scratch handlers ---------- */
+
+    function getPos(e) {
+      const rect = scratchCanvas.getBoundingClientRect();
+      const touch = e.touches ? e.touches[0] : e;
+      return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      };
+    }
+
+    function onScratchStart(e) {
+      e.preventDefault();
+      isScratching = true;
+      const { x, y } = getPos(e);
+      scratchCtx.beginPath();
+      scratchCtx.moveTo(x, y);
+      spawnDust(x, y);
+    }
+
+    let scratchMoveCounter = 0;
+
+    function onScratchMove(e) {
+      if (!isScratching) return;
+      e.preventDefault();
+      const { x, y } = getPos(e);
+      scratchCtx.lineWidth = 44;
+      scratchCtx.lineCap   = 'round';
+      scratchCtx.lineJoin  = 'round';
+      scratchCtx.lineTo(x, y);
+      scratchCtx.stroke();
+
+      // Generar polvo cada pocos pixels de movimiento
+      scratchMoveCounter++;
+      if (scratchMoveCounter % 2 === 0) {
+        spawnDust(x, y);
+      }
+
+      // Chequear progreso periódicamente
+      if (scratchMoveCounter % 6 === 0) {
+        checkScratchProgress();
+      }
+    }
+
+    function onScratchEnd() {
+      isScratching = false;
+      checkScratchProgress(); // check al soltar el dedo/cursor
+    }
+
+    /**
+     * Limpieza automática: cuando rasca el ~60%, la capa restante
+     * se desvanece suavemente para revelar toda la carta limpia.
+     */
+    function autoCleanCard() {
+      if (currentCardIdx === null || isCleaning) return;
+      isCleaning = true;
+
+      // 1. Contar como descubierta inmediatamente
+      revealedSet.add(currentCardIdx);
+      updateLiveCounter();
+      updateCounterOverlay();
+
+      // 2. Ráfaga de polvito festivo
+      const w = scratchContainer.clientWidth || 300;
+      const h = scratchContainer.clientHeight || 450;
+      for (let i = 0; i < 28; i++) {
+        spawnDust(
+          w * 0.15 + Math.random() * (w * 0.7),
+          h * 0.2 + Math.random() * (h * 0.6)
+        );
+      }
+
+      // 3. Desvanecer suavemente lo que quede de la capa negra
+      scratchCanvas.style.transition = 'opacity 0.8s ease-out, filter 0.8s ease-out';
+      scratchCanvas.style.opacity = '0';
+      scratchCanvas.style.filter = 'blur(10px)';
+
+      // 4. Mensaje de confirmación
+      counterOverlay.innerHTML = `<span style="color:#ff6b9d; font-weight:600; text-shadow:0 0 12px rgba(255,107,157,0.6);">✨ ¡Carta ${currentCardIdx + 1} descubierta! ✨</span>`;
+
+      // 5. Limpiar completamente el canvas
+      setTimeout(() => {
+        if (scratchCtx) {
+          scratchCtx.clearRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+        }
+      }, 850);
+    }
+
+    function checkScratchProgress() {
+      if (currentCardIdx === null || isCleaning) return;
+      if (revealedSet.has(currentCardIdx)) return;
+
+      const w = scratchCanvas.width, h = scratchCanvas.height;
+      if (!w || !h) return;
+
+      const imageData = scratchCtx.getImageData(0, 0, w, h);
+      const pixels = imageData.data;
+      let transparent = 0;
+
+      // Evaluamos el canal alpha: < 128 cuenta como borrado/transparente
+      for (let i = 3; i < pixels.length; i += 16) {
+        if (pixels[i] < 128) transparent++;
+      }
+
+      const total   = pixels.length / 16;
+      const percent = transparent / total;
+
+      // Al rascar el ~50% (que visualmente equivale a ~60% de la carta activa), se limpia sola
+      if (percent >= 0.48) {
+        autoCleanCard();
+      }
+    }
+
+    function updateCounterOverlay() {
+      counterOverlay.textContent = `${revealedSet.size} de ${TOTAL_CARDS} cartas descubiertas`;
+    }
+
+    function updateLiveCounter() {
+      counterText.textContent = `${revealedSet.size} de ${TOTAL_CARDS} cartas descubiertas`;
+      revealedSet.forEach(idx => {
+        const dot = dotTrack.querySelector(`.dot[data-dot="${idx}"]`);
+        if (dot) dot.classList.add('filled');
+      });
+    }
+
+    /* =======================================================
+       BOTÓN CERRAR — Elimina tarjeta y redistribuye
+       ======================================================= */
+    closeBtn.addEventListener('click', () => {
+      // Limpiar listeners
+      scratchCanvas.removeEventListener('mousedown',  onScratchStart);
+      scratchCanvas.removeEventListener('mousemove',  onScratchMove);
+      scratchCanvas.removeEventListener('mouseup',    onScratchEnd);
+      scratchCanvas.removeEventListener('mouseleave', onScratchEnd);
+      scratchCanvas.removeEventListener('touchstart', onScratchStart);
+      scratchCanvas.removeEventListener('touchmove',  onScratchMove);
+      scratchCanvas.removeEventListener('touchend',   onScratchEnd);
+
+      // Parar animación de polvo
+      if (dustRAF) { cancelAnimationFrame(dustRAF); dustRAF = null; }
+      dustParticles = [];
+
+      overlay.classList.remove('visible');
+
+      const justRevealedIdx = currentCardIdx;
+      currentCardIdx = null;
+
+      // Si la carta ya se limpió o si el usuario rascó al menos un poco, se da por descubierta
+      if (justRevealedIdx !== null && (revealedSet.has(justRevealedIdx) || scratchMoveCounter >= 5)) {
+        revealedSet.add(justRevealedIdx);
+        updateLiveCounter();
+
+        const cardEl = document.querySelector(`.card[data-index="${justRevealedIdx}"]`);
+        if (cardEl) {
+          cardEl.style.transition = 'none';
+          cardEl.classList.add('removing');
+
+          setTimeout(() => {
+            cardEl.classList.remove('removing');
+            cardEl.classList.add('removed');
+            cardEl.style.display = 'none';
+
+            activeCards = activeCards.filter(c => c !== cardEl);
+
+            if (revealedSet.size >= TOTAL_CARDS) {
+              triggerFinale();
+              return;
+            }
+
+            repositionCards();
+            carouselPaused = false;
+            starfield.classList.remove('dim');
+          }, 1300);
+          return;
+        }
+      }
+
+      carouselPaused = false;
+      starfield.classList.remove('dim');
+    });
+
+    /* =======================================================
+       FASE 4 — VIDEO FINAL (máxima calidad)
+       ======================================================= */
+    function triggerFinale() {
+      if (carouselRAF) cancelAnimationFrame(carouselRAF);
+      carouselPaused = true;
+
+      carouselWrap.classList.add('fade-out');
+      carouselTitle.style.opacity = '0';
+      liveCounter.style.opacity = '0';
+
+      setTimeout(() => {
+        starfield.classList.add('hide');
+        document.getElementById('sparkles-container').style.opacity = '0';
+      }, 800);
+
+      setTimeout(() => {
+        // Forzar máxima calidad: quitar cualquier limitación
+        finaleVideo.setAttribute('preload', 'auto');
+        finaleVideo.playbackRate = 1.0;
+        finaleVideo.play().catch(() => {});
+        videoFinale.classList.add('visible');
+      }, 2500);
+    }
+
+    /* =======================================================
+       RESIZE
+       ======================================================= */
+    window.addEventListener('resize', () => {
+      if (activeCards.length > 0) repositionCards();
+      if (currentCardIdx !== null && scratchReveal.naturalWidth > 0) {
+        fitContainerToImage(scratchReveal.naturalWidth, scratchReveal.naturalHeight);
+        initScratchCanvas();
+        initDustCanvas();
+      }
+    });
+  </script>
+</body>
+</html>
